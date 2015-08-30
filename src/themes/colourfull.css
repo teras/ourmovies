@@ -1,0 +1,11 @@
+a.menu:link {color: white}
+a.menu:visited {color: white}
+a.menu:hover {color:orange}
+
+body {background-color: #f4ecd2}
+a:link {color: black}
+a:visited {color: black}
+a:hover {color: #000099}
+
+th {background-color: #000055;
+	color: #ddeeff}

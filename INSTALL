@@ -1,0 +1,16 @@
+Prerequirements:
+
+1) Apache
+2) PHP for Apache
+3) MySQL (running during the installation)
+
+
+In order to install this program, you need to run the script install-db, which is found under the
+directory bin.
+The program will ask you the following questions:
+
+1) The MySQL username
+2) The MySQL password for this user
+3) The root password, in order to copy files to their destination
+4) The directory where the files will me copied. This directory should be visible to apache.
+

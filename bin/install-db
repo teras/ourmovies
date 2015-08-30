@@ -1,0 +1,45 @@
+#!/bin/sh
+
+DATABASE=ourmovies
+PASS_COMM=
+USER_COMM=
+DIRNAME=`dirname $0`
+
+
+make_config() {
+	cat >$DIRNAME/../src/config.inc <<EOF
+<?php
+	\$sql_server = "localhost";
+	\$sql_username = "$1";
+	\$sql_password = "$2";
+?>"
+EOF
+}
+
+echo -n "Please supply the SQL user : "
+read USER
+if [ "$USER" != "" ] ; then
+	USER_COMM="--user=$USER"
+fi
+echo -n "Please supply the SQL password : "
+read -s PASS
+if [ "$PASS" != "" ] ; then
+	PASS_COMM="--password=$PASS"
+fi
+
+COMM=" $USER_COMM $PASS_COMM"
+
+mysqladmin $COMM ping
+mysqladmin $COMM -f drop $DATABASE
+mysqladmin $COMM create $DATABASE
+mysql $COMM $DATABASE < $DIRNAME/ourmovies.sql
+if [ "$?" != "0" ] ; then
+	exit 1
+fi
+
+make_config $USER $PASS
+
+echo Database $DATABASE created.
+echo "You will be prompted now to give the root passwor, in order to copy the files to their final destination. You can ommit this part of the installation if you do not want to perform this action and copy the files by hand."
+
+su --command="/bin/sh $PWD/$DIRNAME/rootaccess $DATABASE" -

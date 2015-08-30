@@ -1,0 +1,34 @@
+#!/bin/sh
+
+DEFTARGET="/var/www"
+DIRNAME=`dirname $0`
+
+DATABASE=$1
+
+echo REMEMBER! Now running as root!
+echo
+
+check_directory () {
+	echo -n "Please give the parent directory of the application [$DEFTARGET]: "
+	read TARGET
+	if [ "$TARGET" == "" ] ; then
+		TARGET=$DEFTARGET
+	fi
+	DEFTARGET=$TARGET
+	if [ ! -d "$TARGET" ] ; then
+		TARGET=
+		echo "Directory does not exist. Please try again."
+	fi
+
+}
+
+TARGET=
+while test "$TARGET" == "" ; do
+	check_directory
+done
+
+mkdir -p $TARGET/$DATABASE
+cp -r $DIRNAME/../src/* $TARGET/$DATABASE
+if [ "$?" == "0" ] ; then
+	echo Done.
+fi
